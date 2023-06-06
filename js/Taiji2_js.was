@@ -1,0 +1,19 @@
+et x0 = canvas.width / 2;
+let y0 = canvas.height / 2;
+
+function circle(y, radius, color) {
+  context.beginPath();
+  context.fillStyle = color;
+  context.arc(x0, y + y0, radius, 0, Math.PI * 2);
+  context.fill();
+}
+let radius = 120;
+circle(0, radius, 'white')
+context.fillStyle = 'black';
+context.beginPath();
+context.arc(x0, y0, radius, -Math.PI * .5, Math.PI * .5);
+context.fill();
+circle(radius / 2, radius / 2, 'white');
+circle(-radius / 2, radius / 2, 'black');
+circle(radius / 2, radius / 8, 'black');
+circle(-radius / 2, radius / 8, 'white');

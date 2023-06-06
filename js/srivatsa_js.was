@@ -1,0 +1,130 @@
+/**
+ * Draw a Taiji (Yin-Yang Symbol)
+ */
+function Taiji(config)
+{
+	var props = {								// default propertie
+		canvas: document.querySelector('canvas'),
+		radius: 50,
+		//centerX: canvas.width / 2,
+		centerX: 200,
+		//centerY: canvas.height / 2,
+		centerY: 200,
+		angle: Math.PI * .5,
+		outlineColor: 'red',
+		outlineWidth: false,
+		positiveColor: ['black'],
+		negativeColor: ['white'],
+		positiveWidth: false,
+		negativeWidth: false,
+		positiveInnerRadius: '20%',//5,
+		negativeInnerRadius: '20%',//5,
+		positiveInnerColor: ['red'],
+		negativeInnerColor: ['red'],
+		positiveInnerWidth: 2,
+		negativeInnerWidth: 2,
+		dividerWidth: false,
+		dividerColor: [],
+		animate: false//true
+	};
+	for (var p in props) {		// merge given config with default properties
+		this[p] = (typeof config === "undefined" || typeof config[p] === undefined || typeof config[p] === "undefined") ? props[p] : config[p];
+	}
+	if (!this.canvas)
+		throw new Error('canvas failed for Taiji');
+	if (!this.positiveColor[0] && this.positiveColor)
+		this.positiveColor = [this.positiveColor];
+	if (!this.negativeColor[0] && this.negativeColor)
+		this.negativeColor = [this.negativeColor];
+	if (!this.positiveInnerColor[0] && this.positiveInnerColor)
+		this.positiveInnerColor = [this.positiveInnerColor];
+	if (!this.negativeInnerColor[0] && this.negativeInnerColor)
+		this.negativeInnerColor = [this.negativeInnerColor];
+	for (var p in this) {
+		if (p && typeof(this[p]) === 'string'  && this[p].indexOf('%') == this[p].length-1) {
+			var pc = this[p].split('%');
+//			if (Number.isInteger(pc[0]))
+//			if (typeof pc[0] === 'number')
+			if (!isNaN(pc[0]))
+				this[p] = this.radius / 100 * pc[0];
+		}
+	}
+/*	if (positiveInnerRadius && positiveInnerRadius.indexOf(%) === positiveInnerRadius.length-2) {
+//		var pc = positiveInnerRadius.substring(0, positiveInnerRadius.length-2);
+		var parts = positiveInnerRadius.split('%');
+		var pc = parts[0];
+		positiveInnerRadius = radius / 100 * pc;
+	}
+	if (negativeInnerRadius && negativeInnerRadius.indexOf('%') === negativeInnerRadius.length-2) {
+		var pc = negativeInnerRadius.split('%');
+		negativeInnerRadius = radius / 100 * pc[0];
+	}*/
+/*	if (!this.centerX)
+		this.centerX = this.canvas.width / 2;
+	if (!this.centerY)
+		this.centerY = this.canvas.height / 2;*/
+	this.init();		// initialise the transformation
+}
+
+Taiji.prototype.init = function()
+{
+	with (this) {
+		ctx = canvas.getContext('2d');
+		positiveCenterX = 0;
+		positiveCenterY = -radius / 2;
+		negativeCenterX = 0;
+		negativeCenterY = radius / 2;
+/*		if (angle && angle != Math.PI && angle != -Math.PI) {
+			positiveCenterX = positiveCenterX + positiveCenterX * Math.cos(angle * (Math.PI/180));
+			positiveCenterY = positiveCenterY - positiveCenterY * Math.sin(angle * (Math.PI/180));
+			negativeCenterX = negativeCenterX + negativeCenterX * Math.cos(angle * (Math.PI/180));
+			negativeCenterY = negativeCenterX - negativeCenterY * Math.sin(angle * (Math.PI/180));
+		}*/
+		draw();
+		if (animate)
+			window.requestAnimationFrame(doAnimate);
+	}
+//	if (this.animate)
+//		window.requestAnimationFrame(this.animate);
+}
+
+Taiji.prototype.draw = function()
+{
+	with (this) {
+		var Draw = new Drawing;
+//		context.moveTo(this.centerX, this.centerY);
+		Draw.circle(ctx, centerX, centerY, radius, positiveColor[0]);//, outlineColor, outlineWidth);
+//		console.log(`drew circle at ${centerX},${centerY} radius:${radius}`);
+		ctx.fillStyle = negativeColor[0];
+		ctx.beginPath();
+//		ctx.strokeStyle = "red";//"black";
+//		context.moveTo(this.x, this.y);
+//		context.lineTo(this.origX, this.origY);
+//		context.arcTo(this.x, this.y, this.origX, this.origY, 2 * Math.PI/ *this.radius* /);
+		ctx.arc(centerX, centerY, radius, -Math.PI * .5, Math.PI * .5, false);		// draw semi-circle
+		ctx.fill();
+//		ctx.stroke();
+		Draw.circle(ctx, centerX + positiveCenterX, centerY + positiveCenterY, radius / 2, positiveColor[0], positiveColor[0], positiveWidth);
+		Draw.circle(ctx, centerX + negativeCenterX, centerY + negativeCenterY, radius / 2, negativeColor[0], negativeColor[0], negativeWidth);
+		Draw.circle(ctx, centerX - negativeCenterX, centerY - negativeCenterY, radius / 8, negativeColor[0], negativeInnerColor[0], negativeInnerWidth);
+		Draw.circle(ctx, centerX - positiveCenterX, centerY - positiveCenterY, radius / 8, positiveColor[0], positiveInnerColor[0], positiveInnerWidth);
+		Draw.circle(ctx, centerX, centerY, radius, 'transparent', outlineColor, outlineWidth);
+	}
+}
+
+Taiji.prototype.doAnimate = function()
+{
+	with (this) {
+		var counter = 0;
+		let x1 = ctx.canvas.width/2 + 80*Math.sin(counter/Math.PI/4);
+		let y1 = ctx.canvas.height/2 + 80*Math.cos(counter/Math.PI/4);
+		let x2 = ctx.canvas.width/2 + 80*Math.sin(counter/Math.PI/4+Math.PI);
+		let y2 = ctx.canvas.height/2 + 80*Math.cos(counter/Math.PI/4+Math.PI);
+		circle(ctx, x1, y1, 80, 'rgb(0,0,255)');
+		circle(ctx, x2, y2, 80, 'rgb(255,0,0)');
+		circle(ctx, x1, y1, 10, 'rgb(255,0,0)');
+		circle(ctx, x2, y2, 10, 'rgb(0,0,255)');
+		counter++;
+		window.requestAnimationFrame(doAnimate);
+	}
+}

@@ -1,0 +1,66 @@
+/* line 9, ../sass/stars1.scss */
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* line 13, ../sass/stars1.scss */
+body {
+	background: rgb(30, 34, 65);/*#000;*/
+  perspective: 340px;
+}
+
+/* line 17, ../sass/stars1.scss */
+.stars {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 2px;
+  box-shadow: 1480px -208px #dbdbdb, -791px 172px #fcfcfc, -787px 145px #f7f7f7, 1044px 46px #cccccc, -531px 61px #cfcfcf, -1487px 225px #d4d4d4, -324px -363px #cccccc, -626px -447px #ebebeb, -596px 177px whitesmoke, 329px -163px whitesmoke, 63px 239px whitesmoke, 671px 159px #f7f7f7, -764px 174px white, 1402px 7px #d6d6d6, -230px -115px #f2f2f2, -174px 10px #d1d1d1, 644px 75px #dedede, 356px 469px #c2c2c2, 222px -247px #d1d1d1, 750px -289px #fafafa, 594px -458px #c7c7c7, 1312px -245px #f7f7f7, -1041px 465px #dbdbdb, 1401px 368px #e6e6e6, 322px 224px #f0f0f0, -841px 225px #d1d1d1, 575px 254px #c7c7c7, 45px -322px #dbdbdb, 120px 126px #ededed, -681px 0px #e6e6e6, -694px -228px #d1d1d1, -513px -364px #e3e3e3, -11px 396px #e6e6e6, 1182px -219px #d4d4d4, 410px 260px #ededed, 1158px -167px #cccccc, -1257px -456px #d1d1d1, 1049px -414px #e3e3e3, 1306px -391px #c7c7c7, 745px 400px #e3e3e3, -508px 8px #e0e0e0, -235px -456px #f7f7f7, 1164px -34px #c7c7c7, 1420px 127px whitesmoke, 808px -52px #d4d4d4, 938px 244px #d1d1d1, -434px 201px #ebebeb, 594px -84px #cfcfcf, -519px -292px #cfcfcf, -1276px 175px #dbdbdb, -958px 96px #c7c7c7, 98px 158px #d4d4d4, -881px -124px #fcfcfc, 706px -196px #dbdbdb, -556px 175px white, 1255px 150px #d6d6d6, 167px 24px #f0f0f0, -1128px 284px whitesmoke, -188px 199px #e8e8e8, 1458px 57px #f0f0f0, 538px -101px whitesmoke, -57px -374px #cfcfcf, -821px -473px #fcfcfc, -702px 256px #d4d4d4, 765px 358px #e6e6e6, 8px 460px #dbdbdb, 955px 228px #f7f7f7, 785px -322px #c9c9c9, 1379px 344px #ededed, -552px -320px #e0e0e0, 55px -17px #cccccc, 1236px -307px #c9c9c9, -287px -94px #f2f2f2, -1322px 445px #cccccc, 520px 431px #f2f2f2, 760px 441px #e3e3e3, 583px -252px #c9c9c9, 268px 364px #d4d4d4, -747px -44px #ebebeb, 607px 351px #f0f0f0, -120px 104px #f7f7f7, 883px -115px #d4d4d4, 9px -361px #dedede, -677px 309px #dbdbdb, 479px -419px #c9c9c9, 306px 408px #f0f0f0, -903px -317px #ededed, 641px -378px white, -1080px -302px #e6e6e6, 887px -235px #c7c7c7, -1057px -460px white, 834px -394px #c4c4c4, -1265px -152px #dbdbdb, -346px 139px #cccccc, -1296px -80px #c7c7c7, 175px 161px #f2f2f2, -946px -310px #e0e0e0, 1496px -88px #f2f2f2, -199px -343px #d4d4d4, 854px -453px #fafafa, 1005px 366px #d1d1d1, -295px -255px #d1d1d1, 104px 57px #dbdbdb, 1407px 343px #c9c9c9, 82px -318px #c2c2c2, 168px 244px #d4d4d4, -730px -112px #c7c7c7, 1395px 61px whitesmoke, 929px -431px #f2f2f2, 886px -15px #e8e8e8, 780px 177px #fafafa, 392px 295px #fafafa, 283px -475px #d6d6d6, 101px -274px #ebebeb, 72px 384px #fafafa, -277px -69px #dedede, 566px 316px #c9c9c9, -1227px 207px #cccccc, -656px 50px #d1d1d1, 119px -101px #dedede, 987px 429px #fcfcfc, -353px -343px #fcfcfc, -864px -174px whitesmoke, -1375px 19px #dbdbdb, -1482px 103px #fcfcfc, -541px -281px #fcfcfc, -1319px 420px #e0e0e0, 313px 437px #fcfcfc, -955px -128px white, 494px 319px whitesmoke, 752px -270px #f0f0f0, -923px -25px #f7f7f7, -732px 315px #fcfcfc, 418px -165px #e6e6e6, 1170px -467px white, 18px 270px #f2f2f2, -127px 464px #c4c4c4, -1024px 371px white, -1492px 215px #c9c9c9, -1466px 272px #c4c4c4, -1298px -253px #cccccc, -964px -354px whitesmoke, 641px -153px #e0e0e0, 718px 144px #c9c9c9, 498px -10px #c9c9c9, -921px -283px #e6e6e6, -1193px -174px #f7f7f7, -377px 311px #dedede, 375px -234px #cccccc, 1064px -321px #d6d6d6, -1291px 376px #c9c9c9, -386px -59px #c7c7c7, -399px -380px #fafafa, -534px -187px #e3e3e3, 1039px -4px #e8e8e8, 961px 39px #f2f2f2, -503px 195px #d1d1d1, -1025px -167px #dbdbdb, 864px 79px #fcfcfc, -1059px -356px #cccccc, 1401px -229px #cccccc, 142px 156px #e6e6e6, 933px -416px #e0e0e0, -166px 65px #c9c9c9, 1486px -132px #dbdbdb, -751px -246px whitesmoke, 1482px 313px #ebebeb, -122px -187px #c2c2c2, 686px 220px #e0e0e0, -1406px -399px #f7f7f7, 1183px 361px #fcfcfc, -818px 57px #e0e0e0, -178px 244px #d6d6d6, 157px -6px #c9c9c9, 763px 163px whitesmoke, 573px -293px #d6d6d6, -32px 397px #c9c9c9, -1385px -339px #e6e6e6, -782px 289px #f7f7f7, -124px 77px #e8e8e8, -946px 227px whitesmoke, -1118px -360px #dedede, 861px -473px white, 817px 318px #fcfcfc, 1377px -364px #c2c2c2, -1413px -147px #c2c2c2, -923px 371px #c9c9c9, -1112px -258px #f0f0f0, -438px -19px #ebebeb, -1195px -177px #f2f2f2, -1425px -91px #cfcfcf, 1216px 315px #ebebeb, -717px 281px #c9c9c9, 395px 401px #ededed, -1239px 28px #e8e8e8, 1387px 75px #c7c7c7, -1228px 100px #cccccc, 870px -2px #c7c7c7, -441px -154px #e0e0e0, 587px -288px white, 314px -141px #d9d9d9, -1222px -145px #c7c7c7, -1190px 367px whitesmoke, -1210px 351px #f7f7f7, 110px -2px #cccccc, 385px 95px #cfcfcf, 340px 463px #cfcfcf, 386px 238px #d4d4d4, 519px -411px #c9c9c9, -1000px -303px #e3e3e3, 1259px 442px #ededed, -363px -48px #dbdbdb, -1153px -117px #cfcfcf, 1030px 451px #e8e8e8, 736px 341px #d1d1d1, -710px -119px #dbdbdb, -21px 14px #ebebeb, -735px -216px #cccccc, 458px -364px #dbdbdb, 512px -199px #ebebeb, -1418px 21px white, -331px -225px #c9c9c9, 743px 283px #f7f7f7, -1489px 44px #f0f0f0, 460px 299px #f2f2f2, 770px 237px #d4d4d4, 1075px -411px #e3e3e3, 1437px -446px #d1d1d1, -1427px -375px #d6d6d6, -1209px 146px #dedede, 401px -260px #f0f0f0, -410px 80px #cccccc, -1086px 34px #c7c7c7, -763px 207px #cccccc, 1117px 396px #fafafa, 1259px 465px #c7c7c7, 1361px 166px #ebebeb, 812px 128px #f0f0f0, 1281px 38px #cccccc, -153px 376px #c9c9c9, 743px -249px #dbdbdb, -582px 425px #fcfcfc, -966px 463px #cfcfcf, 983px 328px #e3e3e3, -1473px 319px #c2c2c2, 821px 124px #ededed, 672px -242px #ededed, -68px -436px #e8e8e8, -998px -100px #d9d9d9, 516px 105px #ededed, -402px -109px #cfcfcf, -1229px -424px #d6d6d6, 1175px -360px #d9d9d9, 228px -246px #e3e3e3, 1484px -187px #ededed, 960px -357px #e8e8e8, 1099px 45px #cccccc, -566px 471px #f2f2f2, 280px -180px #d1d1d1, -378px -425px #f7f7f7, -1279px 351px whitesmoke, -963px -241px #ededed, -173px 455px #d6d6d6, 117px 344px #fafafa, -1151px 109px #e3e3e3, -684px -402px #dedede, 717px -363px #c7c7c7, 1453px 278px #dbdbdb, 588px -77px #d1d1d1, 186px -86px #e8e8e8, -1430px 80px #e3e3e3, -151px -131px #f2f2f2, -640px 59px white, -1349px -122px #c2c2c2, -1083px 417px #c2c2c2, 438px 138px #e0e0e0, 1062px -313px #ebebeb, -426px -60px #cfcfcf, -213px 442px #e8e8e8, -700px 96px #cfcfcf, 1370px -102px #ebebeb, -1173px 111px #f7f7f7, 177px 35px white, 588px -425px #e3e3e3, 1292px -99px #cfcfcf, 934px 78px #fcfcfc, 918px 312px #d1d1d1, -1233px 129px #f2f2f2, 419px -112px #cfcfcf, -241px -381px white, -582px 265px #cfcfcf, 405px -180px #f7f7f7, -1257px 247px #d9d9d9, 1137px -175px #ebebeb, 650px -356px #c2c2c2, -707px 371px #cfcfcf, 0px -269px #cccccc, -230px 232px #f7f7f7, -184px 436px #d4d4d4, -62px -391px #c4c4c4, 479px 13px #d9d9d9, -1011px 444px #e6e6e6, -804px 279px #e3e3e3, 1479px 346px #f2f2f2, 46px -67px #cccccc, 625px -248px white, -334px 12px #cfcfcf, 42px -366px #c7c7c7, -831px 465px #e8e8e8, -726px -436px #e0e0e0, 1070px 124px #d1d1d1, 1397px 393px #d4d4d4, -903px 121px #fcfcfc, -1353px -477px #e8e8e8, -427px -225px #e8e8e8, 311px -404px #c4c4c4, -478px -257px #d4d4d4, 920px 191px #d1d1d1, 770px -31px #f7f7f7, -1139px -119px #fcfcfc, 1051px -318px #dedede, 41px 283px #dedede, 723px -220px #cfcfcf, -1290px -355px #c7c7c7, -672px 335px #dedede, -1418px -266px #e6e6e6, 1277px 202px #fafafa, -585px -266px #ededed, -1229px -195px #f7f7f7, -1053px 224px #fcfcfc, 398px -126px #d9d9d9, -1056px 324px #c9c9c9, 996px 69px #f7f7f7, -622px -142px #c9c9c9, -1222px 84px #ededed, -69px -427px #c2c2c2, -569px 235px #d6d6d6, -1181px 455px #fafafa, -155px -266px #cccccc, 602px -262px #c7c7c7, 1497px 379px #d4d4d4, 990px 381px #f0f0f0, 1092px 181px #cccccc, 1263px -270px #c9c9c9, -141px -104px #d4d4d4, 123px 368px #fcfcfc, 913px 348px #c4c4c4, 32px -28px #f2f2f2, -1362px -350px whitesmoke, 468px -301px #c7c7c7, -844px 372px #d9d9d9;
+  animation: fly 3s linear infinite;
+  transform-style: preserve-3d;
+}
+/* line 31, ../sass/stars1.scss */
+.stars:before, .stars:after {
+  content: "";
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  box-shadow: inherit;
+}
+/* line 38, ../sass/stars1.scss */
+.stars:before {
+  transform: translateZ(-300px);
+  animation: fade1 3s linear infinite;
+}
+/* line 42, ../sass/stars1.scss */
+.stars:after {
+  transform: translateZ(-600px);
+  animation: fade2 3s linear infinite;
+}
+
+@keyframes fly {
+  from {
+    transform: translateZ(0px);
+  }
+  to {
+    transform: translateZ(300px);
+  }
+}
+@keyframes fade1 {
+  from {
+    opacity: .5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade2 {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: .5;
+  }
+}
