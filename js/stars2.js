@@ -1,5 +1,5 @@
 var centerX = 400, centerY = 200,
-	radius = 192, length,
+	radius = 192, length, debug = true,
 	red = 'rgb(228, 10, 24)',
 	mustard = 'rgb(253, 177, 43)',
 	black = 'rgb(28, 25, 25)',
@@ -28,7 +28,7 @@ var centerX = 400, centerY = 200,
 	// sInterval = 3, // ms before re-draw
 	// sDeg = 18, // degrees per interval
 	bgStobeOffset = 0,
-	baseBgColors = [mustard, 'yellow', 'green', 'blue', 'indigo', 'viloet', red], baseBgIndex = 0;
+	baseBgColors = [mustard, 'yellow', 'green', 'blue', 'indigo', 'rgb(238, 130, 238)', red], baseBgIndex = 0;
 
 if (window.addEventListener)
 	window.addEventListener('load', load_stars2);
@@ -91,7 +91,9 @@ function load_stars2()
 //		rangeEnd: 360,//1000,
 //		rangeStep: 10,//25,
 		innerRadius: Math.floor(radius + radius / 100 * 2),
-		outerRadius: radius+65,
+		outerRadius: Math.floor(radius+65),
+		dashArray: [30, 50],
+		numStars: 123,
 //		start: 0,//135,
 //		end: 360,//1000,//405,
 //		guageStart: 0,
@@ -100,7 +102,7 @@ function load_stars2()
 //		boldColor: "black",
 //		boldStep: 0,//250,
 		/*shorterLine=12,*/
-		linewidth: 1,//2,
+		linewidth: 0.5,//2,
 //		angle: Math.PI * .5,
 		backgroundColor: [black, space],//'gold'],
 //		shadowColor: 'yellow',
@@ -142,6 +144,7 @@ function load_stars2()
 //		positiveWidth: 0,
 		// rotationsPerSecond: 0,//0.2,
 		// animate: false//true
+		debug: true
 	});
 //	context.save();
 //	var csGradient = context.createRadialGradient(0, 0, 1, 0, 0, radius/2);
@@ -317,16 +320,23 @@ function loop(time) {	// microsecond timer 1/1,000,000 accuracy in ms 1/1000th
 	var elapsed = Math.abs(time - lastTime);
 	if (!lastTime || elapsed >= interval) {
 		bgStobeOffset = (spinDir) ? bgStobeOffset+1 : bgStobeOffset-1;
-		bg.march();
+		bg.march((spinDir) ? centerX : -centerX, (spinDir) ? centerY : -centerY, );
 	if (laps >= changeDir) {
 //			console.log(`change direction : laps: ${laps}`)
 			spinDir = !spinDir;
 			laps = 0;
-			if (baseBgIndex >= baseBgColors.length) {
+			if (baseBgIndex >= 360/*baseBgColors.length-1*/) {
+				// baseBgIndex = -1;
 				baseBgIndex = 0;
 			}
-			base.setBackgroundColor(baseBgColors[++baseBgIndex]);
-//			base.setBackgroundColor('hsl('+ baseBgIndex*10+ ', 100, 100)');
+			// console.log(`base is changing from ${baseBgIndex}:${baseBgColors[baseBgIndex]} to ${baseBgIndex+1}:${baseBgColors[baseBgIndex+1]}`);
+			if (typeof debug !== 'undefined' && debug) {
+				console.log(`base is changing to ${baseBgIndex+1}:${baseBgColors[baseBgIndex+1]}`);
+			}
+			// base.setBackgroundColor(baseBgColors[++baseBgIndex]);
+			// base.context.globalCompositeOperation = "color";//"hue";
+			base.setBackgroundColor('hsl('+ baseBgIndex++*45+ ', 90%, 50%)');
+			// base.setBackgroundColor('hsl(180, 50%, 50%)');
 //			baseBgIndex++;
 		}
 		if (elapsed >= cs.interval) {
@@ -338,6 +348,7 @@ function loop(time) {	// microsecond timer 1/1,000,000 accuracy in ms 1/1000th
 			}
 			cs.revolve(csAng);
 			base.revolve(csAng);
+			// tl.rotateMe(csAng, cs.centerX, cs.centerY);
 //			console.log(`angle: ${Draw.degrees(csAng)}deg (${Draw.degrees(csAng)/360})`);
 		}
 		if (elapsed >= tl.interval/*tjInterval*/) {

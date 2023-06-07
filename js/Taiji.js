@@ -49,7 +49,7 @@ function Taiji(config)
 	}
 	this.context = this.canvas.getContext('2d'/*, { alpha: false }*/);
 	// context.save();
-	this.init();		// initialise the transformation
+	// this.init();		// initialise the transformation
 	this.revolve();
 	// context.restore();
 }
@@ -64,17 +64,6 @@ Taiji.prototype.init = function()
 		context.shadowColor = shadowColor;
 		context.shadowOffsetX = shadowOffsetX;
 		context.shadowOffsetY = shadowOffsetY;
-/*		context.setTransform(1, 0, 0, 1, 0, 0);
-		context.beginPath();
-		context.arc(centerX, centerY, radius, 0, Math.PI * 2);
-//		context.stokeStyle = 'green';
-//		context.stroke();
-//		context.clip();
-		context.moveTo(centerX, centerY);
-		this.Draw = new Drawing(canvas);
-		draw();
-//		context.setTransform(1, 0, 0, 1, 0, 0);
-		context.restore();*/
 	}
 }
 
@@ -164,7 +153,7 @@ Taiji.prototype.draw = function(ang)
 			context.stroke();
 		}
 		context.fill();
-		if (outlineColor && outlineWidth) {
+		if (outlineColor && outlineColor != "transparent" && outlineWidth) {
 //			Draw.circle(context, 0, 0, radius, 'transparent', outlineColor, outlineWidth);
 			context.beginPath();
 			context.arc(0, 0, radius, 0, Math.PI * 2);		// draw semi-circle
@@ -172,8 +161,9 @@ Taiji.prototype.draw = function(ang)
 			context.strokeStyle = outlineColor;
 			context.lineWidth = outlineWidth;
 			context.stroke();
+			context.closePath();
 		}
-		context.setTransform(1, 0, 0, 1, 0, 0);
+		// context.setTransform(1, 0, 0, 1, 0, 0);
 //		console.log(`Taiji at ${centerX},${centerY} of ${radius} size in ${context.fillStyle}:${context.getTransform()}`);
 	}
 }
@@ -188,6 +178,23 @@ Taiji.prototype.revolve = function(ang)
 		// context.save();
 		clear();
 //		context.setTransform(1, 0, 0, 1, centerX, centerY);		// reset drawing matrix
+		draw(ang);
+		context.restore();
+	}
+}
+
+Taiji.prototype.rotateMe = function(ang, aroundX, aroundY)
+{
+	with (this) {
+/*		if (typeof radius === "undefined") {
+			this.init();
+		}*/
+		this.init();
+		// context.save();
+		clear();
+		centerX = aroundX;
+		centerY = aroundY;
+		context.setTransform(1, 0, 0, 1, aroundX, aroundY);		// reset drawing matrix
 		draw(ang);
 		context.restore();
 	}

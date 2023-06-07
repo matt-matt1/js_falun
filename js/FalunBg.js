@@ -20,6 +20,8 @@ function FalunBg(config) {
 //		end: 405,
 		guageStart: 0,
 		guageEnd: 270,
+		dashArray: [10, 100],
+		numStars: 150,
 		color: "orange",
 		length: 50,
 		boldColor: "black",
@@ -70,6 +72,13 @@ FalunBg.prototype.init = function()
 /*			}*/
 			guageEnd = rangeEnd;
 		}
+		// this.star = {x, y}
+		this.stars = [];
+		for (var i=0; i<numStars; i++) {
+			var x = Math.floor(Math.random() * canvas.width);
+			var y = Math.floor(Math.random() * canvas.height);
+			stars.push({x: x, y: y/*, z: i*/});
+		}
 	}
 	this.clear();
 	this.currentOffset = 0;
@@ -98,31 +107,104 @@ FalunBg.prototype.toBorder = function(x1, y1, x2, y2/*, left, top, right, bottom
     return {x : dx, y : dy}
 }
 
-FalunBg.prototype.radiantLine = function(innerRadius, outerRadius, degrees, color, dashArray)
+FalunBg.prototype.drawStar = function(x, y, radius, /*width, curve,*/ fillColor, strokeColor, strokeWidth, gravityX, gravityY)
+{
+	if (!x) {
+		x = Math.floor(Math.random() * this.canvas.width);
+	}
+	if (!y) {
+		y = Math.floor(Math.random() * this.canvas.height);
+	}
+	// if (!radius) {
+	// 	radius = Math.floor(Math.random() * 10);
+	// }
+	radius = Math.floor(radius / 16);
+	// var dist = Math.sqrt(x * x + Y * Y);
+	var path = new Path2D();
+	path.moveTo(x + radius, y);
+	path.bezierCurveTo(x, y, x, y, x, y - radius);
+	path.bezierCurveTo(x, y, x, y, x - radius, y);
+	path.bezierCurveTo(x, y, x, y, x, y + radius);
+	path.bezierCurveTo(x, y, x, y, x + radius, y);
+	if (strokeColor) {
+		this.context.strokeStyle = strokeColor;
+		if (strokeWidth) {
+			this.context.lineWidth = Math.floor(radius / 20);//strokeWidth;
+			this.context.stroke(path);
+			context.closePath();
+		}
+	}
+	if (fillColor) {
+		var gradient = context.createRadialGradient(x, y, 1, x, y, radius);
+		gradient.addColorStop(0, 'white');
+		gradient.addColorStop(1, fillColor/*'transparent'*/);
+		this.context.fillStyle = gradient;//fillColor;
+		this.context.fill(path);
+	}
+}
+
+FalunBg.prototype.drawDashedLine = function(startX, startY, endX, endY, dashArray, offset)
+{
+	var posX = (endX - startX) ? true : false,
+		posY = (endY - startY) ? true : false,
+		dx = (posX) ? endX - startX : startX - endX,
+		dy = (posY) ? endY - startY : startY - endY,
+		dist = Math.sqrt(dx * dx + dy * dy),
+		draw, x, y, segment, index;
+	if (!offset) {
+		offset = 0;
+	}
+	if (!dashArray) dashArray = [10, 5];
+	this.context.beginPath();
+	this.context.moveTo(startX, startY);
+	// segment = dashArray.shift();
+	while (((posX) ? dist < endX : dist > endX) && ((posY) ? dist < endY : dist > endY)) {
+		x = (posX) ? i + 1 : i - 1;
+		y = (posY) ? i + 1 : i - 1;
+		// if (dashArray.length-1 == index)
+		draw = dist < (dashArray[0] + offset);
+		if (draw) {
+			this.context.lineTo(x, y);
+		} else {
+			this.context.moveTo(x, y);
+		}
+		i++;
+		dist--;
+		index++;
+	}
+	// for (var i=0; i<dist; i++) {
+	// }
+/*	context.moveTo(startX, startY);
+	context.lineTo(endX, endY);
+	context.setLineDash(array);*/
+}
+
+FalunBg.prototype.radiantLine = function(innerRadius, outerRadius, degrees, color, dashs)
 {
 	with (this) {
 		var radians = degrees * Math.PI / 180;
-		//var innerX = centerX + innerRadius * Math.cos(radians);
-		//var innerY = centerY + innerRadius * Math.sin(radians);
-		//var outerX = centerX + outerRadius * Math.cos(radians);
-		//var outerY = centerY + outerRadius * Math.sin(radians);
+		var innerX = centerX + innerRadius * Math.cos(radians);
+		var innerY = centerY + innerRadius * Math.sin(radians);
+		var outerX = centerX + outerRadius * Math.cos(radians);
+		var outerY = centerY + outerRadius * Math.sin(radians);
 		
 		context.beginPath();
-		var dest = toBorder(centerX + innerRadius * Math.cos(radians), centerY + innerRadius * Math.sin(radians), centerX + outerRadius * Math.cos(radians), centerY + outerRadius * Math.sin(radians));
+		var dest = toBorder(innerX, innerY, outerX, outerY);
 		//context.moveTo(innerX, innerY);
-		context.moveTo(centerX + innerRadius * Math.cos(radians), centerY + innerRadius * Math.sin(radians));
+		// context.moveTo(innerX, innerY);
 		//context.lineTo(outerX, outerY);
-//		context.lineTo(centerX + outerRadius * Math.cos(radians), centerY + outerRadius * Math.sin(radians));
-		context.lineTo(dest.x, dest.y);
-		// dashArray[0] = (dashArray[0] * Math.sin(radians)) ? dashArray[0] * Math.sin(radians) : dashArray[0] * Math.cos(radians);
-		// dashArray[0] *= Math.sin(radians) + Math.cos(radians);
+//		context.lineTo(centerX, outerY);
+		drawDashedLine(innerX, innerY, dest.x, dest.y, dashs, offset);
+		// context.lineTo(dest.x, dest.y);
+		// dashs[0] = (dashs[0] * Math.sin(radians)) ? dashs[0] * Math.sin(radians) : dashs[0] * Math.cos(radians);
+		// dashs[0] *= Math.sin(radians) + Math.cos(radians);
 		// for (var i=0; i<canvas.width+canvas.height; i++) {
-		// 	dashArray.push(dashArray[0] + i);
-		// 	dashArray.push(dashArray[1] + i);
+		// 	dashs.push(dashs[0] + i);
+		// 	dashs.push(dashs[1] + i);
 		// }
-		context.setLineDash(dashArray/*[50, 10]*/);
+		// context.setLineDash(dashs);
 /*		context.dashedLine(centerX + innerRadius * Math.cos(radians), centerY + innerRadius * Math.sin(radians),
-			centerX + outerRadius * Math.cos(radians), centerY + outerRadius * Math.sin(radians),
+			centerX, outerY,
 //			context.canvas.width * Math.cos(radians), context.canvas.height * Math.sin(radians),
 			[100, 150], currentOffset);*/
 /*		context.dashedLine(centerX + innerRadius * Math.cos(radians), centerY + innerRadius * Math.sin(radians),
@@ -132,6 +214,7 @@ FalunBg.prototype.radiantLine = function(innerRadius, outerRadius, degrees, colo
 		context.strokeStyle = color;
 		context.lineWidth = linewidth;
 		context.stroke();
+		context.closePath();
 	}
 }
 
@@ -163,6 +246,15 @@ FalunBg.prototype.clear = function()
 	}
 }
 
+FalunBg.prototype.moveStars = function(gravityX, gravityY)
+{
+	with (this) {
+		for (var i=0; i<numStars; i++) {
+			drawStar(stars[i].x, stars[i].y, i, /*10, 10, 5,*/ 'yellow', 1, 'white', gravityX, gravityY);
+		}
+	}
+}
+
 FalunBg.prototype.draw = function()
 {
 	with (this) {
@@ -177,11 +269,11 @@ FalunBg.prototype.draw = function()
 				var shorterLine = (outerRadius - innerRadius) / 2;*/
 	        if (value % boldStep == 0) {
 //	            radiantLine(innerRadius, outerRadius, degrees, boldColor);
-	            radiantLine(radius, radius + boldLength, degrees, boldColor, [50, 10]);
+	            radiantLine(radius, radius + boldLength, degrees, boldColor, dashArray);
 	        } else {
 //	            radiantLine(innerRadius, outerRadius - shorterLine, degrees, markColor);
 /*				if (value % 2 == 0) {*/
-	            	radiantLine(radius, radius + length, degrees, color, [50, 10]);
+	            	radiantLine(radius, radius + length, degrees, color, dashArray);
 /*				} else {
 	            	radiantLine(radius, radius + length, degrees, color, [20, 60]);
 				}*/
@@ -213,12 +305,13 @@ FalunBg.prototype.draw = function()
 	}
 }
 
-FalunBg.prototype.march = function()
+FalunBg.prototype.march = function(gravityX, gravityY)
 {
 	with (this) {
 		// init();
 		clear();
 		context.lineDashOffset = -bgStobeOffset;
+		moveStars(gravityX, gravityY);
 		draw();
 	}
 }

@@ -31,7 +31,7 @@ function FalunBase(config) {
 		outlineColor: 'rgba(0, 0, 0, 0)',
 //		positiveWidth: 0,
 		rotationsPerSecond: 0,//0.2,
-		animate: false//true
+		debug: false//true
 	};
 	for (var p in props) {		// merge given config with default properties
 		this[p] = (typeof config === "undefined" || typeof config[p] === undefined || typeof config[p] === "undefined") ? props[p] : config[p];
@@ -90,12 +90,24 @@ FalunBase.prototype.clear = function()
 			context.fillStyle = color;
 		}*/
 		// context.beginPath();
+		// if (typeof debug !== 'undefined' && debug) {
+		// 	context.save();
+		// }
 		context.fillStyle = backgroundColor;
 		let region = new Path2D();
 		region.arc(centerX, centerY, radius, 0, Math.PI * 2);
 		region.arc(centerX, centerY, radius / 2, 0, Math.PI * 2);
 		context.clip(region, "evenodd");
 		context.fill(region, "evenodd");
+		if (typeof debug !== 'undefined' && debug) {
+			context.moveTo(centerX - radius, centerY - radius - Math.floor(radius/3));
+			context.lineTo(centerX + radius + Math.floor(radius/3), centerY + radius);
+			// context.strokeStyle = 'grey';
+			context.lineWidth = 5;
+			context.stroke();
+			context.closePath();
+			// context.restore();
+		}
 /*		context.arc(centerX, centerY, radius, 0, Math.PI * 2);
 		context.clip();
 		context.fill();*/
@@ -162,7 +174,7 @@ FalunBase.prototype.revolve = function(ang)
 		}*/
 		context.save();
 		clear();
-		context.setTransform(1, 0, 0, 1, centerX, centerY);		// reset drawing matrix
+		// context.setTransform(1, 0, 0, 1, centerX, centerY);		// reset drawing matrix
 		draw(ang);
 		context.restore();
 	}

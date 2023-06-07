@@ -113,6 +113,54 @@ Drawing.prototype.getLargestSquareSideInCircle = function(radius)
 	return side = 2 * Math.sqrt(radius * radius / 2)
 }
 
+//https://stackoverflow.com/questions/168838/color-scaling-function
+Drawing.prototype.rgb_to_hsv = function (r, g, b)
+{
+	maxc = max(r, g, b);
+	minc = min(r, g, b);
+	v = maxc;
+	if (minc == maxc) return (0, 0, v);
+	diff = maxc - minc;
+	s = diff / maxc;
+	rc = (maxc - r) / diff;
+	gc = (maxc - g) / diff;
+	bc = (maxc - b) / diff;
+	if (r == maxc) {
+		h = bc - gc;
+	} else if (g == maxc) {
+		h = 2.0 + rc - bc;
+	} else {
+		h = 4.0 + gc - rc;
+	}
+	h = (h / 6.0) % 1.0; //comment: this calculates only the fractional part of h/6
+	return (h, s, v);
+}
+/*
+Drawing.prototype.rgb_hsv_to_hex = function (val/ *red, green, blue* /)
+{
+	red = (float)val / 200 * 255;
+	green = (float)(200 - val) / 200 * 255;
+	blue = 0;
+	return red << 16 + green << 8 + blue;
+}
+*/
+Drawing.prototype.hsv_to_rgb = function(h, s, v)
+{
+	if (s == 0.0) return (v, v, v);
+	i = Math.floor(h*6.0); //comment: floor() should drop the fractional part
+	f = (h*6.0) - i;
+	p = v *(1.0 - s);
+	q = v *(1.0 - s * f);
+	t = v *(1.0 - s *(1.0 - f));
+	if (i % 6 == 0) return (v, t, p);
+	if (i == 1) return (q, v, p);
+	if (i == 2) return (p, v, t);
+	if (i == 3) return (p, q, v);
+	if (i == 4) return (t, p, v);
+	if (i == 5) return (v, p, q);
+//comment: 0 <= i <= 6, so we never come here
+}
+
 Drawing.prototype.circle = function(x, y, radius, fillColor, outlineColor, outlineWidth)
 {
 	this.context.beginPath();

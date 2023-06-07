@@ -38,10 +38,10 @@ function Swastika(config)
 				this[p] = this.radius / 100 * pc[0];
 		}
 	}
-	this.init();		// initialise the transformation
+	// this.init();		// initialise the transformation
 	// context.save();
 	this.revolve();
-	context.restore();
+	// context.restore();
 }
 
 Swastika.prototype.init = function()
@@ -311,6 +311,7 @@ Swastika.prototype.draw = function(ang)
 			if (outlineWidth)
 				context.lineWidth = outlineWidth
 			context.stroke();
+			context.closePath();
 		}
 		context.fill(pathWhole());
 //		console.log(`Swastika at ${centerX},${centerY}(${Draw.degrees(ang)}) radius: ${radius} : ${length} in ${context.fillStyle}: ${context.getTransform()}`);

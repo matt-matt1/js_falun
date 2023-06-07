@@ -21,6 +21,7 @@ function CurvedSwastika(config)
 		// rotationsPerSecond: 0,//0.2,				// number of revolution each second
 		interval: 1,
 		rotationDegree: 18,
+		debug: false
 		// animate: false//true
 	};
 	for (var p in props) {		// merge given config with default properties
@@ -37,7 +38,7 @@ function CurvedSwastika(config)
 				this[p] = this.radius / 100 * pc[0];
 		}
 	}
-	this.init();		// initialise the transformation
+	// this.init();		// initialise the transformation
 	// context.save();
 	this.revolve();
 	// context.restore();
@@ -72,11 +73,11 @@ CurvedSwastika.prototype.clear = function()
 {
 	with (this) {
 		context.shadowBlur = 0;
-/*		context.shadowColor = 'transparent';
+		context.shadowColor = 'transparent';
 		context.shadowOffsetX = 0;
 		context.shadowOffsetY = 0;
-		context.outlineColor = 'transparent';*/
-		context.outlineWidth = 0;
+		// context.outlineColor = 'transparent';
+		// context.outlineWidth = 0;
 		context.beginPath();
 		context.arc(centerX, centerY, radius, 0, Math.PI * 2);
 		context.clip();		// only draw in this area
@@ -94,12 +95,15 @@ CurvedSwastika.prototype.clear = function()
 			context.fillStyle = base.backgroundColor;
 		}
 		context.fill();
-/*		context.moveTo(centerX, centerY - radius);
-		context.lineTo(centerX, centerY + radius);
-		context.moveTo(centerX - radius, centerY);
-		context.lineTo(centerX + radius, centerY);
-		context.stokeStyle = 'black';
-		context.stroke();*/
+		if (typeof debug !== 'undefined' && debug) {
+			context.moveTo(centerX, centerY - radius);
+			context.lineTo(centerX, centerY + radius);
+			context.moveTo(centerX - radius, centerY);
+			context.lineTo(centerX + radius, centerY);
+			context.stokeStyle = 'black';
+			context.stroke();
+			context.closePath();
+		}
 		// context.restore();
 	}
 }
@@ -173,11 +177,12 @@ CurvedSwastika.prototype.drawArms = function(angle)
 			context.fill(pathArm());
 			context.rotate(step);
 		}
-		if (width) {
-			context.lineWidth = width;
-			if (outlineColor)
+		if (outlineWidth) {
+			context.lineWidth = outlineWidth;
+			if (outlineColor && outlineColor != "transparent")
 				context.strokeStyle = outlineColor
 			context.stroke();
+			context.closePath();
 		}
 		context.setTransform(1, 0, 0, 1, 0, 0);
 		console.log(`CurvedSwastika at ${centerX},${centerY} of ${radius} size in ${context.fillStyle}:${context.getTransform()}`);
