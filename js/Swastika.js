@@ -48,16 +48,16 @@ Swastika.prototype.init = function()
 {
 	// if (typeof config === "object") {
 	// }
-	with (this) {
-		this.context = canvas.getContext('2d');
+	// with (this) {
+		this.context = this.canvas.getContext('2d');
 //		this.context = canvas.getContext('2d', { /*alpha: false*/ });
 		//this.length = (2 * Math.sqrt(/*(*/radius * radius/*)*/ / 2)) /*- corner*/;
-		context.save();
-		this.length = Draw.getLargestSquareSideInCircle(radius);
-		context.shadowBlur = bgShadowBlur;
-		context.shadowColor = bgShadowColor;
-		context.shadowOffsetX = bgShadowOffsetX;
-		context.shadowOffsetY = bgShadowOffsetY;
+		this.context.save();
+		this.length = Draw.getLargestSquareSideInCircle(this.radius);
+		this.context.shadowBlur = this.bgShadowBlur;
+		this.context.shadowColor = this.bgShadowColor;
+		this.context.shadowOffsetX = this.bgShadowOffsetX;
+		this.context.shadowOffsetY = this.bgShadowOffsetY;
 		//colorMode(HSB,circles,100,100);//change the color mode to HSB (hue,saturation,brightness) - makes it easy to color rainbows, just change the hue
 /*		context.save();
 		clear();		// paint background
@@ -72,80 +72,80 @@ Swastika.prototype.init = function()
 			//var interval = 1000/60;
 //			window.setInterval(doAnimate(this), interval);
 		context.restore();*/
-	}
+	// }
 }
 
 Swastika.prototype.clear = function()
 {
-	with (this) {
-		context.beginPath();
-		context.arc(centerX, centerY, radius, 0, Math.PI * 2, false);
+	// with (this) {
+		this.context.beginPath();
+		this.context.arc(this.centerX, this.centerY, this.radius, 0, Math.PI * 2, false);
 		// context.clip();		// only draw in this area
-		if (typeof backgroundColor === 'object' && typeof backgroundColor[1] === 'string') {
-			var total = backgroundColor.length, i=0;
-			var gradient = context.createRadialGradient(x, y, 1, x, y, radius);
-			while (typeof backgroundColor[i] === 'string') {
-				gradient.addColorStop(i/total, backgroundColor[i++]);
+		if (typeof this.backgroundColor === 'object' && typeof this.backgroundColor[1] === 'string') {
+			var total = this.backgroundColor.length, i=0;
+			var gradient = context.createRadialGradient(x, y, 1, x, y, this.radius);
+			while (typeof this.backgroundColor[i] === 'string') {
+				gradient.addColorStop(i/total, this.backgroundColor[i++]);
 			}
-			context.fillStyle = gradient;
+			this.context.fillStyle = gradient;
 		} else /*if (typeof fillColor === 'string')*/ {
-			context.fillStyle = backgroundColor;
+			this.context.fillStyle = this.backgroundColor;
 		}
 //		context.stokeStyle = 'black';
 //		context.stroke();
-		context.fill();
-	}
+		this.context.fill();
+	// }
 }
 
 Swastika.prototype.pathArm = function()
 {
-	with (this) {
+	// with (this) {
 		const path = new Path2D();
 		// start at bottom-left, go clockwise
 		path.moveTo(
-			0 - (armWidth/2),
-			0 - (armWidth/2));		// draw from top-left corner, before the corner-radius -clockwise
+			0 - (this.armWidth/2),
+			0 - (this.armWidth/2));		// draw from top-left corner, before the corner-radius -clockwise
 		path.lineTo(
-			0 - (armWidth/2),
-			0 - (length/2) + armWidth);	// vertical inner off-center
+			0 - (this.armWidth/2),
+			0 - (this.length/2) + this.armWidth);	// vertical inner off-center
 
 		path.arcTo(		// draw horizontal line then curve up
-			0 - (length/2),
-			0 - (length/2) + armWidth,
-			0 - (length/2),
-			0 - (length/2) + corner,
-			corner);	// top-left inner corner
+			0 - (this.length/2),
+			0 - (this.length/2) + this.armWidth,
+			0 - (this.length/2),
+			0 - (this.length/2) + this.corner,
+			this.corner);	// top-left inner corner
 		path.arcTo(		// comoplete going up then curve over top
-			0 - (length/2),
-			0 - (length/2),
-			0 - (length/2) + corner,
-			0 - (length/2),
-			corner);		// top-left curved corner
+			0 - (this.length/2),
+			0 - (this.length/2),
+			0 - (this.length/2) + this.corner,
+			0 - (this.length/2),
+			this.corner);		// top-left curved corner
 		path.arcTo(		// complete horizontal line then curve down
-			(armWidth/2),
-			0 - (length/2),
-			(armWidth/2),
-			0 - (length/2) + (armWidth/2) + corner,
-			corner);	// outer top-off-center corner
+			(this.armWidth/2),
+			0 - (this.length/2),
+			(this.armWidth/2),
+			0 - (this.length/2) + (this.armWidth/2) + this.corner,
+			this.corner);	// outer top-off-center corner
 		path.lineTo(		// complete open segement with vertical line
-			(armWidth/2),
-			0 - (armWidth/2));
+			(this.armWidth/2),
+			0 - (this.armWidth/2));
 		return path;
-	}
+	// }
 }
 
 Swastika.prototype.drawParts = function(angle)
 {
-	with (this) {
+	// with (this) {
 		context.beginPath();
 //		context.setTransform(1, 0, 0, 1, centerX, centerY);
-		var step = 90 * (Math.PI / 180), m = new DOMMatrix(), path = new Path2D(pathArm());
+		var step = 90 * (Math.PI / 180), m = new DOMMatrix(), path = new Path2D(this.pathArm());
 		console.log(path);
 		m.a = 1;//m11
 		m.b = 0;//m12
 		m.c = 0;//m21
 		m.d = 1;//m22
-		m.e = centerX;//m41
+		m.e =	this.centerX;//m41
 		m.f = centerY;//m42
 //		context.rotate(angle);		// revolve the coordinate matrix to the specific angle
 /*		if (typeof color !== 'undefined' && typeof color !== 'string' && typeof color[1] !== 'undefined') {
@@ -156,7 +156,7 @@ Swastika.prototype.drawParts = function(angle)
 			}
 			context.fillStyle = gradient;
 		} else / *if (typeof fillColor === 'string')* / {*/
-			context.fillStyle = color;
+			context.fillStyle = this.color;
 /*		}*/
 		m = m.rotateSelf(angle);
 		for (var i=3; i<4; i++) {	// rotate shape for other arms
@@ -168,190 +168,190 @@ Swastika.prototype.drawParts = function(angle)
 		}
 //		context.setTransform(1, 0, 0, 1, 0, 0);
 		context.fill(path);
-		console.log(`Swastika at ${centerX},${centerY} of ${radius} size ${length} in ${context.fillStyle}: ${context.getTransform()}`);
-	}
+		console.log(`Swastika at ${this.centerX},${this.centerY} of ${this.radius} size ${this.length} in ${this.context.fillStyle}: ${this.context.getTransform()}`);
+	// }
 }
 
 Swastika.prototype.pathWhole = function()
 {
-	with (this) {
+	// with (this) {
 		const path = new Path2D();
 		// start at bottom-left, go clockwise
 		path.moveTo(
-			0 - (armWidth/2),
-			0 - (armWidth/2));		// draw from top-left corner, before the corner-radius -clockwise
+			0 - (this.armWidth/2),
+			0 - (this.armWidth/2));		// draw from top-left corner, before the corner-radius -clockwise
 		path.lineTo(
-			0 - (armWidth/2),
-			0 - (length/2) + armWidth);	// vertical inner off-center
+			0 - (this.armWidth/2),
+			0 - (this.length/2) + this.armWidth);	// vertical inner off-center
 
 		path.arcTo(		// draw horizontal line then curve up
-			0 - (length/2),
-			0 - (length/2) + armWidth,
-			0 - (length/2),
-			0 - (length/2) + corner,
-			corner);	// top-left inner corner
+			0 - (this.length/2),
+			0 - (this.length/2) + this.armWidth,
+			0 - (this.length/2),
+			0 - (this.length/2) + this.corner,
+			this.corner);	// top-left inner this.corner
 		path.arcTo(		// comoplete going up then curve over top
-			0 - (length/2),
-			0 - (length/2),
-			0 - (length/2) + corner,
-			0 - (length/2),
-			corner);		// top-left curved corner
+			0 - (this.length/2),
+			0 - (this.length/2),
+			0 - (this.length/2) + this.corner,
+			0 - (this.length/2),
+			this.corner);		// top-left curved corner
 		path.arcTo(		// complete horizontal line then curve down
-			(armWidth/2),
-			0 - (length/2),
-			(armWidth/2),
-			0 - (length/2) + (armWidth/2) + corner,
-			corner);	// outer top-off-center corner
+			(this.armWidth/2),
+			0 - (this.length/2),
+			(this.armWidth/2),
+			0 - (this.length/2) + (this.armWidth/2) + this.corner,
+			this.corner);	// outer top-off-center corner
 		path.lineTo(		// complete open segement with vertical line
-			(armWidth/2),
-			0 - (armWidth/2));
+			(this.armWidth/2),
+			0 - (this.armWidth/2));
 //2  x +  y +
 		path.lineTo(
-			(length/2) - armWidth,
-			0 - (armWidth/2));	// vertical inner off-center
+			(this.length/2) - this.armWidth,
+			0 - (this.armWidth/2));	// vertical inner off-center
 
 		path.arcTo(		// draw horizontal line then curve up
-			(length/2) - armWidth,
-			0 - (length/2),
-			(length/2) - armWidth + corner,
-			0 - (length/2),
-			corner);	// top-left inner corner
+			(this.length/2) - this.armWidth,
+			0 - (this.length/2),
+			(this.length/2) - this.armWidth + this.corner,
+			0 - (this.length/2),
+			this.corner);	// top-left inner corner
 		path.arcTo(		// comoplete going up then curve over top
-			(length/2),
-			0 - (length/2),
-			(length/2),
-			0 - (length/2) + corner,
-			corner);		// top-left curved corner
+			(this.length/2),
+			0 - (this.length/2),
+			(this.length/2),
+			0 - (this.length/2) + this.corner,
+			this.corner);		// top-left curved corner
 		path.arcTo(		// complete horizontal line then curve down
-			(length/2),
-			(armWidth/2),
-			(length/2) - corner,
-			(armWidth/2),
-			corner);	// outer top-off-center corner
+			(this.length/2),
+			(this.armWidth/2),
+			(this.length/2) - this.corner,
+			(this.armWidth/2),
+			this.corner);	// outer top-off-center corner
 		path.lineTo(		// complete open segement with vertical line
-			(armWidth/2),
-			(armWidth/2));
+			(this.armWidth/2),
+			(this.armWidth/2));
 //3  x +  y -
 		path.lineTo(
-			(armWidth/2),
-			(length/2) - armWidth);	// vertical inner off-center
+			(this.armWidth/2),
+			(this.length/2) - this.armWidth);	// vertical inner off-center
 
 		path.arcTo(		// draw horizontal line then curve up
-			(length/2),
-			(length/2) - armWidth,
-			(length/2),
-			(length/2) - armWidth + corner,
-			corner);	// top-left inner corner
+			(this.length/2),
+			(this.length/2) - this.armWidth,
+			(this.length/2),
+			(this.length/2) - this.armWidth + this.corner,
+			this.corner);	// top-left inner corner
 		path.arcTo(		// comoplete going up then curve over top
-			(length/2),
-			(length/2),
-			(length/2) - corner,
-			(length/2),
-			corner);		// top-left curved corner
+			(this.length/2),
+			(this.length/2),
+			(this.length/2) - this.corner,
+			(this.length/2),
+			this.corner);		// top-left curved corner
 		path.arcTo(		// complete horizontal line then curve down
-			0 - (armWidth/2),
-			(length/2),
-			0 - (armWidth/2),
-			(length/2) - corner,
-			corner);	// outer top-off-center corner
+			0 - (this.armWidth/2),
+			(this.length/2),
+			0 - (this.armWidth/2),
+			(this.length/2) - this.corner,
+			this.corner);	// outer top-off-center corner
 		path.lineTo(		// complete open segement with vertical line
-			0 - (armWidth/2),
-			(armWidth/2));
+			0 - (this.armWidth/2),
+			(this.armWidth/2));
 //4  x -  y -
 		path.lineTo(
-			0 - (length/2) + armWidth,
-			(armWidth/2));	// vertical inner off-center
+			0 - (this.length/2) + this.armWidth,
+			(this.armWidth/2));	// vertical inner off-center
 
 		path.arcTo(		// draw horizontal line then curve up
-			0 - (length/2) + armWidth,
-			(length/2),
-			0 - (length/2) + armWidth - corner,
-			(length/2),
-			corner);	// top-left inner corner
+			0 - (this.length/2) + this.armWidth,
+			(this.length/2),
+			0 - (this.length/2) + this.armWidth - this.corner,
+			(this.length/2),
+			this.corner);	// top-left inner corner
 		path.arcTo(		// comoplete going up then curve over top
-			0 - (length/2),
-			(length/2),
-			0 - (length/2),
-			(length/2) - corner,
-			corner);		// top-left curved corner
+			0 - (this.length/2),
+			(this.length/2),
+			0 - (this.length/2),
+			(this.length/2) - this.corner,
+			this.corner);		// top-left curved corner
 		path.arcTo(		// complete horizontal line then curve down
-			0 - (length/2),
-			0 - (armWidth/2),
-			0 - (length/2) + corner,
-			0 - (armWidth/2),
-			corner);	// outer top-off-center corner
+			0 - (this.length/2),
+			0 - (this.armWidth/2),
+			0 - (this.length/2) + this.corner,
+			0 - (this.armWidth/2),
+			this.corner);	// outer top-off-center corner
 		path.lineTo(		// complete open segement with vertical line
-			0 - (armWidth/2),
-			0 - (armWidth/2));
+			0 - (this.armWidth/2),
+			0 - (this.armWidth/2));
 
 //		path.closePath();
 		return path;
-	}
+	// }
 }
 
 Swastika.prototype.draw = function(ang)
 {
-	with (this) {
-		context.beginPath();
+	// with (this) {
+		this.context.beginPath();
 		if (typeof ang !== 'undefined') {
-			context.rotate(ang);
+			this.context.rotate(ang);
 		}
-		if (typeof color === 'object' && typeof color[1] === 'string') {
-			var total = color.length, i=0;
-			var gradient = context.createRadialGradient(0, 0, 1, 0, 0, radius);
-			while (typeof color[i] === 'string') {
-				gradient.addColorStop(i/total, color[i++]);
+		if (typeof this.color === 'object' && typeof this.color[1] === 'string') {
+			var total = this.color.length, i=0;
+			var gradient = this.context.createRadialGradient(0, 0, 1, 0, 0, this.radius);
+			while (typeof this.color[i] === 'string') {
+				gradient.addColorStop(i/total, this.color[i++]);
 			}
-			context.fillStyle = gradient;
+			this.context.fillStyle = gradient;
 		} else /*if (typeof fillColor === 'string')*/ {
-			context.fillStyle = color;
+			this.context.fillStyle = this.color;
 		}
-		if (outlineColor && outlineColor != "transparent") {
-			context.strokeStyle = outlineColor;
-			if (outlineWidth)
-				context.lineWidth = outlineWidth
-			context.stroke();
-			context.closePath();
+		if (this.outlineColor && this.outlineColor != "transparent") {
+			this.context.strokeStyle = this.outlineColor;
+			if (this.outlineWidth)
+				this.context.lineWidth = this.outlineWidth
+			this.context.stroke();
+			this.context.closePath();
 		}
-		context.fill(pathWhole());
+		this.context.fill(this.pathWhole());
 //		console.log(`Swastika at ${centerX},${centerY}(${Draw.degrees(ang)}) radius: ${radius} : ${length} in ${context.fillStyle}: ${context.getTransform()}`);
-	}
+	// }
 }
 
 Swastika.prototype.doAnimate = function(that)
 {
 //	with (this) {
-	with (that) {
+	// with (that) {
 //	with (Swastika) {
 		console.log(`animate Swastika`);
-		clear();
-		context.setTransform(1, 0, 0, 1, centerX, centerY);		// reset drawing matrix
+		this.clear();
+		this.context.setTransform(1, 0, 0, 1, this.centerX, this.centerY);		// reset drawing matrix
 //		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 
 //		time = frame++ * (1000 / 60);   // Assumes 60 fps
 //		var ang = ((time * Math.PI * 2) / 1000) * rotationsPerSecond;
 		//console.log(`animate Swastika at ${time} is ${ang}`);
-		draw(rotationsPerSecond * 50);
+		this.draw(rotationsPerSecond * 50);
 //		element.style.transform = `translateX(${count}px)`;
 
 //		requestAnimationFrame(doAnimate(that));  // request next frame
 		window.setInterval(that.doAnimate(that), 1500);
-	}
+	// }
 }
 
 Swastika.prototype.revolve = function(ang)
 {
 	//var canvas = document.getElementById('canvasCenter');
 	//var context = canvas.getContext('2d')
-	with (this) {
+	// with (this) {
 		//console.log(`Swastika revolve by ${Draw.degrees(ang)}`);
 /*		if (typeof radius === "undefined") {
 			this.init();
 		}*/
 		this.init();
-		clear();
-		context.setTransform(1, 0, 0, 1, centerX, centerY);		// reset drawing matrix
-		draw(ang);
-		context.restore();
-	}
+		this.clear();
+		this.context.setTransform(1, 0, 0, 1, this.centerX, this.centerY);		// reset drawing matrix
+		this.draw(ang);
+		this.context.restore();
+	// }
 }

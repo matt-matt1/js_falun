@@ -48,16 +48,16 @@ CurvedSwastika.prototype.init = function()
 {
 	// if (typeof config === "object") {
 	// }
-	with (this) {
-		this.context = canvas.getContext('2d'/*, { alpha: false }*/);
-		context.save();
+	// with (this) {
+		this.context = this.canvas.getContext('2d'/*, { alpha: false }*/);
+		this.context.save();
 /*		context = canvas.getContext('2d');
 		context.save();
 		clear();		// paint background
 		context.setTransform(1, 0, 0, 1, 0, 0);		// reset drawing matrix
 		context.translate(centerX, centerY);		// all drawings use 0, 0 as center
 */		//this.length = (2 * Math.sqrt(/*(*/radius * radius/*)*/ / 2)) /*- corner*/;
-		this.length = Draw.getLargestSquareSideInCircle(radius);
+		this.length = Draw.getLargestSquareSideInCircle(this.radius);
 /*		context.shadowBlur = shadowBlur;
 		context.shadowColor = shadowColor;
 		context.shadowOffsetX = shadowOffsetX;
@@ -66,46 +66,46 @@ CurvedSwastika.prototype.init = function()
 //		context.translate(-centerX, -centerY);
 		//context.setTransform(1, 0, 0, 1, 0, 0);
 		context.restore();*/
-	}
+	// }
 }
 
 CurvedSwastika.prototype.clear = function()
 {
-	with (this) {
-		context.shadowBlur = 0;
-		context.shadowColor = 'transparent';
-		context.shadowOffsetX = 0;
-		context.shadowOffsetY = 0;
+	// with (this) {
+		this.context.shadowBlur = 0;
+		this.context.shadowColor = 'transparent';
+		this.context.shadowOffsetX = 0;
+		this.context.shadowOffsetY = 0;
 		// context.outlineColor = 'transparent';
 		// context.outlineWidth = 0;
-		context.beginPath();
-		context.arc(centerX, centerY, radius, 0, Math.PI * 2);
-		context.clip();		// only draw in this area
-		if (typeof backgroundColor === 'object' && typeof backgroundColor[1] === 'string') {
-			var total = backgroundColor.length, i=0;
-			var gradient = context.createRadialGradient(x, y, 1, x, y, radius);
-			while (typeof backgroundColor[i] === 'string') {
-				gradient.addColorStop(i/total, backgroundColor[i++]);
+		this.context.beginPath();
+		this.context.arc(this.centerX, this.centerY, this.radius, 0, Math.PI * 2);
+		// this.context.clip();		// only draw in this area
+		if (typeof this.backgroundColor === 'object' && typeof this.backgroundColor[1] === 'string') {
+			var total = this.backgroundColor.length, i=0;
+			var gradient = this.context.createRadialGradient(x, y, 1, x, y, this.radius);
+			while (typeof this.backgroundColor[i] === 'string') {
+				gradient.addColorStop(i/total, this.backgroundColor[i++]);
 			}
-			context.fillStyle = gradient;
+			this.context.fillStyle = gradient;
 		} else /*if (typeof fillColor === 'string')*/ {
-			context.fillStyle = backgroundColor;
+			this.context.fillStyle = this.backgroundColor;
 		}
 		if (base.backgroundColor) {
-			context.fillStyle = base.backgroundColor;
+			this.context.fillStyle = base.backgroundColor;
 		}
-		context.fill();
-		if (typeof debug !== 'undefined' && debug) {
-			context.moveTo(centerX, centerY - radius);
-			context.lineTo(centerX, centerY + radius);
-			context.moveTo(centerX - radius, centerY);
-			context.lineTo(centerX + radius, centerY);
-			context.stokeStyle = 'black';
-			context.stroke();
-			context.closePath();
+		this.context.fill();
+		if (typeof this.debug !== 'undefined' && this.debug) {
+			this.context.moveTo(this.centerX, this.centerY - this.radius);
+			this.context.lineTo(this.centerX, this.centerY + this.radius);
+			this.context.moveTo(this.centerX - this.radius,	this.centerY);
+			this.context.lineTo(this.centerX + this.radius,	this.centerY);
+			this.context.stokeStyle = 'black';
+			this.context.stroke();
+			this.context.closePath();
 		}
 		// context.restore();
-	}
+	// }
 }
 
 
@@ -113,7 +113,7 @@ CurvedSwastika.prototype.clear = function()
 
 CurvedSwastika.prototype.pathArm = function()
 {
-	with (this) {
+	// with (this) {
 		const path = new Path2D();
 		path.moveTo(
 			0 - armLength + (armWidth/2),	0 - armLength + armWidth*2/*1.5*/);		// draw from top-left corner, before the corner-radius -clockwise
@@ -154,15 +154,15 @@ CurvedSwastika.prototype.pathArm = function()
 			0 - armLength + 1.5*armWidth,	0 - armLength + armWidth*1.5,
 			0 - armLength + armWidth,		0 - armLength + armWidth*1.5/*(armWidth/2)*/);		// draw from top-left corner, before the corner-radius -clockwise
 		return path;
-	}
+	// }
 }
 CurvedSwastika.prototype.drawArms = function(angle)
 {
-	with (this) {
-		context.beginPath();
+	// with (this) {
+		this.context.beginPath();
 		var step = 90 * (Math.PI / 180);
-		context.setTransform(1, 0, 0, 1, centerX, centerY);
-		context.rotate(angle);		// revolve the coordinate matrix to the specific angle
+		this.context.setTransform(1, 0, 0, 1, this.centerX, this.centerY);
+		this.context.rotate(angle);		// revolve the coordinate matrix to the specific angle
 /*		if (typeof color !== 'undefined' && typeof color !== 'string' && typeof color[1] !== 'undefined') {
 			var total = color.length, i=0;
 			var gradient = context.createRadialGradient(0, 0, 1, 0, 0, radius);
@@ -171,22 +171,22 @@ CurvedSwastika.prototype.drawArms = function(angle)
 			}
 			context.fillStyle = gradient;
 		} else / *if (typeof fillColor === 'string')* / {*/
-			context.fillStyle = color;
+			this.context.fillStyle = this.color;
 /*		}*/
 		for (var i=0; i<4; i++) {	// rotate shape for other 3 faces
-			context.fill(pathArm());
-			context.rotate(step);
+			this.context.fill(pathArm());
+			this.context.rotate(step);
 		}
 		if (outlineWidth) {
-			context.lineWidth = outlineWidth;
-			if (outlineColor && outlineColor != "transparent")
-				context.strokeStyle = outlineColor
-			context.stroke();
-			context.closePath();
+			this.context.lineWidth = outlineWidth;
+			if (this.outlineColor && this.outlineColor != "transparent")
+				this.context.strokeStyle = this.outlineColor
+			this.context.stroke();
+			this.context.closePath();
 		}
-		context.setTransform(1, 0, 0, 1, 0, 0);
-		console.log(`CurvedSwastika at ${centerX},${centerY} of ${radius} size in ${context.fillStyle}:${context.getTransform()}`);
-	}
+		this.context.setTransform(1, 0, 0, 1, 0, 0);
+		console.log(`CurvedSwastika at ${this.centerX},${this.centerY} of ${this.radius} size in ${this.context.fillStyle}:${this.context.getTransform()}`);
+	// }
 }
 
 /***** ^^^^ unused ^^^ ******/
@@ -194,135 +194,135 @@ CurvedSwastika.prototype.drawArms = function(angle)
 
 CurvedSwastika.prototype.pathWhole = function()
 {
-	with (this) {		// NOTE: A vector {x,y} can be rotated 90 deg clockwise {-y,x} or anti clockwise {y,-x}
+	// with (this) {		// NOTE: A vector {x,y} can be rotated 90 deg clockwise {-y,x} or anti clockwise {y,-x}
 		const path = new Path2D();
 		path.moveTo(
-			0 - (armWidth/2),				0 - (armWidth/2));		// draw from bottom-left corner, clockwise
+			0 - (this.armWidth/2),				0 - (this.armWidth/2));		// draw from bottom-left corner, clockwise
 		path.lineTo(
-			0 - (armWidth/2),				0 - (length/2) + armWidth);	// vertical inner off-center
+			0 - (this.armWidth/2),				0 - (this.length/2) + this.armWidth);	// vertical inner off-center
 
 		//under-arm
 		path.bezierCurveTo(
-			0 - (armWidth/2),				0 - (length/2) - (armWidth/2),
-			0 - (length/2) /*- (armWidth/2)*/,		0 - (length/2) + (armWidth/2),
-			0 - (length/2) - (armWidth/3),	0 - (length/2) + armWidth);		// draw from top-left corner, before the corner-radius -clockwise
+			0 - (this.armWidth/2),				0 - (this.length/2) - (this.armWidth/2),
+			0 - (this.length/2) /*- (armWidth/2)*/,		0 - (this.length/2) + (this.armWidth/2),
+			0 - (this.length/2) - (this.armWidth/3),	0 - (this.length/2) + this.armWidth);		// draw from top-left corner, before the corner-radius -clockwise
 
 		// top
 		path.bezierCurveTo(
-			0 - (length/2) + (armWidth/2),	0 - (length/2) - armWidth*1.3,
-			armWidth*1.3,					0 - (length/2) - armWidth,
-			(armWidth/2),					0 - (length/2) + 2.3*armWidth		// top-left curved corner
+			0 - (this.length/2) + (this.armWidth/2),	0 - (this.length/2) - this.armWidth*1.3,
+		 this.armWidth*1.3,					0 - (this.length/2) - this.armWidth,
+			(this.armWidth/2),					0 - (this.length/2) + 2.3*this.armWidth		// top-left curved corner
 		);
 
 		path.lineTo(
-			(armWidth/2),					0 - (length/2) + armWidth);
+			(this.armWidth/2),					0 - (this.length/2) + this.armWidth);
 		path.lineTo(		// complete open segement with vertical line
-			(armWidth/2),					0 - (armWidth/2));
+			(this.armWidth/2),					0 - (this.armWidth/2));
 
 //2
 		path.lineTo(
-			(length/2) - armWidth,			0 - (armWidth/2));	// vertical inner off-center
+			(this.length/2) - this.armWidth,			0 - (this.armWidth/2));	// vertical inner off-center
 
 		//under-arm
 		path.bezierCurveTo(
-			(length/2) + (armWidth/2),		0 - (armWidth/2),
-			(length/2) - (armWidth/2),		0 - (length/2) /*- (armWidth/2)*/,
-			(length/2) - armWidth,			0 - (length/2) - (armWidth/3));		// draw from top-left corner, before the corner-radius -clockwise
+			(this.length/2) + (this.armWidth/2),		0 - (this.armWidth/2),
+			(this.length/2) - (this.armWidth/2),		0 - (this.length/2) /*- (armWidth/2)*/,
+			(this.length/2) - this.armWidth,			0 - (this.length/2) - (this.armWidth/3));		// draw from top-left corner, before the corner-radius -clockwise
 
 		// top
 		path.bezierCurveTo(
-			(length/2) + armWidth*1.3,		0 - (length/2) + (armWidth/2),
-			(length/2) + armWidth,			armWidth*1.3,
-			(length/2) - 2.3*armWidth,		(armWidth/2)						// top-left curved corner
+			(this.length/2) + this.armWidth*1.3,		0 - (this.length/2) + (this.armWidth/2),
+			(this.length/2) + this.armWidth,		 this.armWidth*1.3,
+			(this.length/2) - 2.3*this.armWidth,		(this.armWidth/2)						// top-left curved corner
 		);
 
 		path.lineTo(
-			(length/2) - armWidth,			(armWidth/2));
+			(this.length/2) - this.armWidth,			(this.armWidth/2));
 		path.lineTo(		// complete open segement with vertical line
-			(armWidth/2),					(armWidth/2));
+			(this.armWidth/2),					(this.armWidth/2));
 
 //3
 		path.lineTo(
-			(armWidth/2),					(length/2) - armWidth);	// vertical inner off-center
+			(this.armWidth/2),					(this.length/2) - this.armWidth);	// vertical inner off-center
 
 		//under-arm
 		path.bezierCurveTo(
-			(armWidth/2),					(length/2) + (armWidth/2),
-			(length/2) /*+ (armWidth/2)*/,		(length/2) - (armWidth/2),
-			(length/2) + (armWidth/3),		(length/2) - armWidth);		// draw from top-left corner, before the corner-radius -clockwise
+			(this.armWidth/2),					(this.length/2) + (this.armWidth/2),
+			(this.length/2) /*+ (this.armWidth/2)*/,		(this.length/2) - (this.armWidth/2),
+			(this.length/2) + (this.armWidth/3),		(this.length/2) - this.armWidth);		// draw from top-left corner, before the corner-radius -clockwise
 
 		// top
 		path.bezierCurveTo(
-			(length/2) - (armWidth/2),		(length/2) + armWidth*1.3,
-			0 - armWidth*1.3,				(length/2) + armWidth,
-			0 - (armWidth/2),				(length/2) - 2.3*armWidth		// top-left curved corner
+			(this.length/2) - (this.armWidth/2),		(this.length/2) + this.armWidth*1.3,
+			0 - this.armWidth*1.3,				(this.length/2) + this.armWidth,
+			0 - (this.armWidth/2),				(this.length/2) - 2.3*this.armWidth		// top-left curved corner
 		);
 
 		path.lineTo(		// complete open segement with vertical line
-			0 - (armWidth/2),			(length/2) - armWidth);
+			0 - (this.armWidth/2),			(this.length/2) - this.armWidth);
 		path.lineTo(		// complete open segement with vertical line
-			0 - (armWidth/2),			(armWidth/2));
+			0 - (this.armWidth/2),			(this.armWidth/2));
 
 //4
 		path.lineTo(
-			0 - (length/2) + armWidth,				(armWidth/2));	// vertical inner off-center
+			0 - (this.length/2) + this.armWidth,				(this.armWidth/2));	// vertical inner off-center
 
 			//under-arm
 		path.bezierCurveTo(
-			0 - (length/2) - (armWidth/2),	(armWidth/2),
-			0 - (length/2) + (armWidth/2),		(length/2) /*+ (armWidth/2)*/,
-			0 - (length/2) + armWidth,		(length/2) + (armWidth/3));		// draw from top-left corner, before the corner-radius -clockwise
+			0 - (this.length/2) - (this.armWidth/2),	(this.armWidth/2),
+			0 - (this.length/2) + (this.armWidth/2),		(this.length/2) /*+ (armWidth/2)*/,
+			0 - (this.length/2) + this.armWidth,		(this.length/2) + (this.armWidth/3));		// draw from top-left corner, before the corner-radius -clockwise
 
 		// top
 		path.bezierCurveTo(
-			0 - (length/2) - armWidth*1.3,	(length/2) - (armWidth/2),
-			0 - (length/2) - armWidth,		0 - armWidth*1.3,
-			0 - (length/2) + 2.3*armWidth,	0 - (armWidth/2)		// top-left curved corner
+			0 - (this.length/2) - this.armWidth*1.3,	(this.length/2) - (this.armWidth/2),
+			0 - (this.length/2) - this.armWidth,		0 - this.armWidth*1.3,
+			0 - (this.length/2) + 2.3*this.armWidth,	0 - (this.armWidth/2)		// top-left curved corner
 		);
 /**/
 		path.lineTo(		// complete open segement with vertical line
-		0 - (length/2) + armWidth,			0 - (armWidth/2));
+		0 - (this.length/2) + this.armWidth,			0 - (this.armWidth/2));
 
 /*		path.lineTo(		// complete open segement with vertical line
 			0 - (length/2) + (armWidth/2),			0 - (armWidth/2));
 */		path.closePath();
 		return path;
-	}
+	// }
 }
 
 CurvedSwastika.prototype.draw = function(ang)
 {
-	with (this) {
+	// with (this) {
 //		context.beginPath();
 		if (typeof ang !== 'undefined') {
-			context.rotate(ang);
+			this.context.rotate(ang);
 		}
-		if (typeof color === 'object' && typeof color[1] === 'string') {
-			var total = color.length, i=0;
-			var gradient = context.createRadialGradient(0, 0, 1, 0, 0, radius);
-			while (typeof color[i] === 'string') {
-				gradient.addColorStop(i/total, color[i++]);
+		if (typeof this.color === 'object' && typeof this.color[1] === 'string') {
+			var total = this.color.length, i=0;
+			var gradient = this.context.createRadialGradient(0, 0, 1, 0, 0, radius);
+			while (typeof this.color[i] === 'string') {
+				gradient.addColorStop(i/total, this.color[i++]);
 			}
-			context.fillStyle = gradient;
+			this.context.fillStyle = gradient;
 		} else /*if (typeof fillColor === 'string')*/ {
-			context.fillStyle = color;
+			this.context.fillStyle = this.color;
 		}
-		context.fill(pathWhole());
+		this.context.fill(this.pathWhole());
 //		console.log(`CurvedSwastika at ${centerX},${centerY}:(${Draw.degrees(ang)}) radius:${radius} in ${context.fillStyle}:${context.getTransform()}`);
-	}
+	// }
 }
 
 CurvedSwastika.prototype.revolve = function(ang)
 {
-	with (this) {
+	// with (this) {
 /*		if (typeof radius === "undefined") {
 			this.init();
 		}*/
 		this.init();
 		// context.save();
-		clear();
-		context.setTransform(1, 0, 0, 1, centerX, centerY);		// reset drawing matrix
-		draw(ang);
-		context.restore();
-	}
+		this.clear();
+		this.context.setTransform(1, 0, 0, 1, this.centerX, this.centerY);		// reset drawing matrix
+		this.draw(ang);
+		this.context.restore();
+	// }
 }

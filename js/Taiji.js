@@ -59,35 +59,35 @@ Taiji.prototype.init = function()
 	// if (typeof config === "object") {
 	// }
 	with (this) {
-		context.save();
-		context.shadowBlur = shadowBlur;
-		context.shadowColor = shadowColor;
-		context.shadowOffsetX = shadowOffsetX;
-		context.shadowOffsetY = shadowOffsetY;
+		this.context.save();
+		this.context.shadowBlur = this.shadowBlur;
+		this.context.shadowColor = this.shadowColor;
+		this.context.shadowOffsetX = this.shadowOffsetX;
+		this.context.shadowOffsetY = this.shadowOffsetY;
 	}
 }
 
 Taiji.prototype.clear = function()
 {
-	with (this) {
-		context.beginPath();
-		if (typeof positiveColor !== 'undefined') {
-			if (typeof positiveColor === 'object' && typeof positiveColor[1] === 'string') {
-				var total = fillColor.length, i=0;
-				var gradient = context.createRadialGradient(centerX, centerY, 1, centerX, centerY, radius);
+	// with (this) {
+		this.context.beginPath();
+		if (typeof this.positiveColor !== 'undefined') {
+			if (typeof this.positiveColor === 'object' && typeof pthis.ositiveColor[1] === 'string') {
+				var total = this.positiveColor.length, i=0;
+				var gradient = this.context.createRadialGradient(this.centerX, this.centerY, 1,	this.centerX, this.centerY, this.radius);
 				while (typeof positiveColor[i] === 'string') {
-					gradient.addColorStop(i/total, positiveColor[i++]);
+					gradient.addColorStop(i/total, this.positiveColor[i++]);
 				}
-				context.fillStyle = gradient;
+				this.context.fillStyle = gradient;
 			} else /*if (typeof fillColor === 'string')*/ {
-				context.fillStyle = positiveColor;
+				this.context.fillStyle = this.positiveColor;
 			}
 		}
-		if (outlineWidth)
-			context.lineWidth = outlineWidth;
-		context.arc(centerX, centerY, radius, 0, Math.PI * 2, false);
-		context.clip();		// only draw in this area
-		context.fill();
+		if (this.outlineWidth)
+			this.context.lineWidth = this.outlineWidth;
+		this.context.arc(this.centerX, this.centerY, this.radius, 0, Math.PI * 2, false);
+		// this.context.clip();		// only draw in this area
+		this.context.fill();
 	//	if (!outlineColor)
 	//		outlineColor = transparent;
 /*		if (outlineColor) {
@@ -100,12 +100,12 @@ Taiji.prototype.clear = function()
 				context.closePath();
 			context.stroke();
 		}*/
-	}
+	// }
 }
 
 Taiji.prototype.draw = function(ang)
 {
-	with (this) {
+	// with (this) {
 /*		if (typeof negativeColor !== 'undefined' && typeof negativeColor !== 'string' && typeof negativeColor[1] !== 'undefined') {
 			var total = negativeColor.length, i=0;
 			var gradient = context.createRadialGradient(centerX, centerY, 1, centerX, centerY, radius);
@@ -114,88 +114,88 @@ Taiji.prototype.draw = function(ang)
 			}
 			context.fillStyle = gradient;
 		} else {*/
-			context.fillStyle = negativeColor;
+			this.context.fillStyle = this.negativeColor;
 /*		}*/
-		context.setTransform(1, 0, 0, 1, centerX, centerY);
+		this.context.setTransform(1, 0, 0, 1, this.centerX, this.centerY);
 		if (typeof ang !== 'undefined') {
-			context.rotate(ang);		// revolve the coordinate matrix to the specific angle
+			this.context.rotate(ang);		// revolve the coordinate matrix to the specific angle
 		}
-		context.beginPath();
-		context.arc(0, 0, radius, -Math.PI * .5, Math.PI * .5);		// draw semi-circle
-		context.fill();
+		this.context.beginPath();
+		this.context.arc(0, 0, this.radius, -Math.PI * .5, Math.PI * .5);		// draw semi-circle
+		this.context.fill();
 //		Draw.circle(0, 0 - radius / 2, radius / 2, positiveColor);
-		context.beginPath();
-		context.arc(0, 0 - radius / 2, radius / 2, 0, Math.PI * 2);		// draw semi-circle
-		context.fillStyle = positiveColor;
-		context.fill();
+		this.context.beginPath();
+		this.context.arc(0, 0 - this.radius / 2, this.radius / 2, 0, Math.PI * 2);		// draw semi-circle
+		this.context.fillStyle = this.positiveColor;
+		this.context.fill();
 //		Draw.circle(0, 0 + radius / 2, radius / 2, negativeColor);
-		context.beginPath();
-		context.arc(0, 0 + radius / 2, radius / 2, 0, Math.PI * 2);		// draw semi-circle
-		context.fillStyle = negativeColor;
-		context.fill();
+		this.context.beginPath();
+		this.context.arc(0, 0 + this.radius / 2, this.radius / 2, 0, Math.PI * 2);		// draw semi-circle
+		this.context.fillStyle = this.negativeColor;
+		this.context.fill();
 //		Draw.circle(0, 0 - radius / 2, positiveInnerRadius, positiveInnerColor, positiveInnerOutlineColor, positiveInnerOulineWidth);
-		context.beginPath();
-		context.arc(0, 0 - radius / 2, positiveInnerRadius, 0, Math.PI * 2);		// draw semi-circle
-		context.fillStyle = positiveInnerColor;
-		if (positiveInnerOutlineColor && positiveInnerOulineWidth) {
-			context.strokeStyle = positiveInnerOutlineColor;
-			context.lineWidth = positiveInnerOulineWidth;
-			context.stroke();
+		this.context.beginPath();
+		this.context.arc(0, 0 - this.radius / 2, this.positiveInnerRadius, 0, Math.PI * 2);		// draw semi-circle
+		this.context.fillStyle = this.positiveInnerColor;
+		if (this.positiveInnerOutlineColor && this.positiveInnerOulineWidth) {
+			this.context.strokeStyle = this.positiveInnerOutlineColor;
+			this.context.lineWidth = this.positiveInnerOulineWidth;
+			this.context.stroke();
 		}
-		context.fill();
+		this.context.fill();
 //		Draw.circle(0, 0 + radius / 2, negativeInnerRadius, negativeInnerColor, negativeInnerOutlineColor, negativeInnerOulineWidth);
-		context.beginPath();
-		context.arc(0, 0 + radius / 2, negativeInnerRadius, 0, Math.PI * 2);		// draw semi-circle
-		context.fillStyle = negativeInnerColor;
-		if (negativeInnerOutlineColor && negativeInnerOulineWidth) {
-			context.strokeStyle = negativeInnerOutlineColor;
-			context.lineWidth = negativeInnerOulineWidth;
-			context.stroke();
+		this.context.beginPath();
+		this.context.arc(0, 0 + this.radius / 2, this.negativeInnerRadius, 0, Math.PI * 2);		// draw semi-circle
+		this.context.fillStyle = this.negativeInnerColor;
+		if (this.negativeInnerOutlineColor && this.negativeInnerOulineWidth) {
+			this.context.strokeStyle = this.negativeInnerOutlineColor;
+			this.context.lineWidth = this.negativeInnerOulineWidth;
+			this.context.stroke();
 		}
-		context.fill();
-		if (outlineColor && outlineColor != "transparent" && outlineWidth) {
+		this.context.fill();
+		if (this.outlineColor && this.outlineColor != "transparent" && this.outlineWidth) {
 //			Draw.circle(context, 0, 0, radius, 'transparent', outlineColor, outlineWidth);
-			context.beginPath();
-			context.arc(0, 0, radius, 0, Math.PI * 2);		// draw semi-circle
-			context.fillStyle = 'transparent';
-			context.strokeStyle = outlineColor;
-			context.lineWidth = outlineWidth;
-			context.stroke();
-			context.closePath();
+			this.context.beginPath();
+			this.context.arc(0, 0, this.radius, 0, Math.PI * 2);		// draw semi-circle
+			this.context.fillStyle = 'transparent';
+			this.context.strokeStyle = this.outlineColor;
+			this.context.lineWidth = this.outlineWidth;
+			this.context.stroke();
+			this.context.closePath();
 		}
 		// context.setTransform(1, 0, 0, 1, 0, 0);
 //		console.log(`Taiji at ${centerX},${centerY} of ${radius} size in ${context.fillStyle}:${context.getTransform()}`);
-	}
+	// }
 }
 
 Taiji.prototype.revolve = function(ang)
 {
-	with (this) {
+	// with (this) {
 /*		if (typeof radius === "undefined") {
 			this.init();
 		}*/
 		this.init();
 		// context.save();
-		clear();
+		this.clear();
 //		context.setTransform(1, 0, 0, 1, centerX, centerY);		// reset drawing matrix
-		draw(ang);
-		context.restore();
-	}
+		this.draw(ang);
+		this.context.restore();
+	// }
 }
 
 Taiji.prototype.rotateMe = function(ang, aroundX, aroundY)
 {
-	with (this) {
+	// with (this) {
 /*		if (typeof radius === "undefined") {
 			this.init();
 		}*/
 		this.init();
 		// context.save();
-		clear();
-		centerX = aroundX;
-		centerY = aroundY;
-		context.setTransform(1, 0, 0, 1, aroundX, aroundY);		// reset drawing matrix
-		draw(ang);
-		context.restore();
-	}
+		this.clear();
+		this.centerX = aroundX;
+		this.centerY = aroundY;
+		this.context.setTransform(1, 0, 0, 1, aroundX, aroundY);		// reset drawing matrix
+		this.draw(ang);
+		this.context.restore();
+	// }
 }

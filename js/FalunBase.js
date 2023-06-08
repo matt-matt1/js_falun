@@ -44,9 +44,9 @@ function FalunBase(config) {
 		}
 	}
 	this.init();		// initialise the transformation
-	context.save();
+	this.context.save();
 	this.clear();
-	context.restore();
+	this.context.restore();
 }
 
 FalunBase.prototype.init = function()
@@ -80,7 +80,7 @@ FalunBase.prototype.init = function()
 
 FalunBase.prototype.clear = function()
 {
-	with (this) {
+	// with (this) {
 /*		if (typeof backgroundColor === 'object' && typeof backgroundColor[1] !== 'undefined') {
 			const gradient = context.createRadialGradient(centerX, centerY, radius, centerX, centerY, context.canvas.width + context.canvas.height);
 			gradient.addColorStop(0, space);
@@ -93,19 +93,20 @@ FalunBase.prototype.clear = function()
 		// if (typeof debug !== 'undefined' && debug) {
 		// 	context.save();
 		// }
-		context.fillStyle = backgroundColor;
+		this.context.fillStyle = this.backgroundColor;
 		let region = new Path2D();
-		region.arc(centerX, centerY, radius, 0, Math.PI * 2);
-		region.arc(centerX, centerY, radius / 2, 0, Math.PI * 2);
-		context.clip(region, "evenodd");
-		context.fill(region, "evenodd");
-		if (typeof debug !== 'undefined' && debug) {
-			context.moveTo(centerX - radius, centerY - radius - Math.floor(radius/3));
-			context.lineTo(centerX + radius + Math.floor(radius/3), centerY + radius);
+		region.arc(this.centerX, this.centerY, this.radius, 0, Math.PI * 2);
+		region.arc(this.centerX, this.centerY, this.radius / 2, 0, Math.PI * 2);
+		this.context.clip(region, "evenodd");
+		this.context.fill(region, "evenodd");
+		if (typeof this.debug !== 'undefined' && this.debug) {
+			this.context.beginPath();
+			this.context.moveTo(this.centerX - this.radius, this.centerY - this.radius - Math.floor(this.radius/3));
+			this.context.lineTo(this.centerX + this.radius + Math.floor(this.radius/3), this.centerY + this.radius);
 			// context.strokeStyle = 'grey';
-			context.lineWidth = 5;
-			context.stroke();
-			context.closePath();
+			this.context.lineWidth = 5;
+			this.context.stroke();
+			this.context.closePath();
 			// context.restore();
 		}
 /*		context.arc(centerX, centerY, radius, 0, Math.PI * 2);
@@ -116,12 +117,12 @@ FalunBase.prototype.clear = function()
 /*		context.beginPath();
 		context.arc(0, 0, radius, 0, Math.PI * 2, false);		// mask all except the falun
 		context.clip();*/
-	}
+	// }
 }
 
 FalunBase.prototype.draw = function()
 {
-	with (this) {
+	// with (this) {
 /*		context.fillStyle = 'white';
 		for (var value=rangeStart; value<=rangeEnd; value+=rangeStep) {
 	        var scaledValue = (rangeEnd == guageEnd) ? value : scaleIntoRange(rangeStart, rangeEnd, guageStart, guageEnd, value);
@@ -162,36 +163,36 @@ FalunBase.prototype.draw = function()
 				}
 			}
 		}*/
-	}
+	// }
 }
 
 FalunBase.prototype.revolve = function(ang)
 {
-	with (this) {
+	// with (this) {
 		//console.log(`Swastika revolve by ${Draw.degrees(ang)}`);
 /*		if (typeof radius === "undefined") {
 			init();
 		}*/
-		context.save();
-		clear();
+		this.context.save();
+		this.clear();
 		// context.setTransform(1, 0, 0, 1, centerX, centerY);		// reset drawing matrix
-		draw(ang);
-		context.restore();
-	}
+		this.draw(ang);
+		this.context.restore();
+	// }
 }
 
 FalunBase.prototype.setBackgroundColor = function(color)
 {
-	with (this) {
+	// with (this) {
 		//console.log(`Swastika revolve by ${Draw.degrees(ang)}`);
 /*		if (typeof radius === "undefined") {
 			this.init();
 		}*/
-		context.save();
-		backgroundColor = color;
-		clear();
+		this.context.save();
+		this.backgroundColor = color;
+		this.clear();
 //		context.setTransform(1, 0, 0, 1, centerX, centerY);		// reset drawing matrix
 //		draw(ang);
-		context.restore();
-	}
+		this.context.restore();
+	// }
 }
